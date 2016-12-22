@@ -22,9 +22,10 @@
 
 // Which pin on the Arduino is connected to the NeoPixels?
 // On a Trinket or Gemma we suggest changing this to 1
-#define PIN_NEO_PIXEL 4
+#define PIN_NEO_PIXEL 7
 #define PIN_BUTTON_GO 2
 #define PIN_SPEAKER 5
+#define PIN_RELAY 4
 #define PIN_GATE_STATUS_LED_RED 18
 #define PIN_GATE_STATUS_LED_GREEN 19
 
@@ -36,7 +37,7 @@
 // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
 // Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
 // example for more information on possible values.
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMPIXELS, PIN_NEO_PIXEL, NEO_RGBW + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(8, PIN_NEO_PIXEL, NEO_RGBW + NEO_KHZ800);
 
 struct gate_step {
   int tone_length;
@@ -64,7 +65,7 @@ int currentStep = 0;
 
 uint32_t ORANGE = strip.Color(255, 100, 0);
 uint32_t GREEN = strip.Color(0, 255, 0);
-uint32_t RED = strip.Color(255, 0, 0);
+uint32_t RED = strip.Color(255, 0, 0, 0);
 uint32_t YELLOW = strip.Color(255, 255, 0, 10);
 uint32_t BLUE = strip.Color(0, 0, 255);
 uint32_t WHITE = strip.Color(0, 0, 0, 255);
@@ -81,13 +82,21 @@ uint32_t WHITE = strip.Color(0, 0, 0, 255);
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(PIN_SPEAKER, OUTPUT);
+  pinMode(PIN_BUTTON_GO, INPUT_PULLUP);
+  pinMode(PIN_RELAY, OUTPUT);
+  attachInterrupt(1, Interrupt1, RISING);
+  digitalWrite(3, HIGH); // interrupt on 3
+  digitalWrite(PIN_RELAY, LOW);
   strip.begin();
-  strip.setBrightness(100);
-  pinMode(PIN_BUTTON_GO,INPUT_PULLUP);
-  chase(BLUE);
+  strip.setBrightness(255);
+  //pinMode(PIN_BUTTON_GO,INPUT);
+  //chase(BLUE);
+
   //set_ready();
 
   //tmrpcm.PIN_SPEAKER = PIN_SPEAKER;
+
+  //begin_sequence();
   /*Serial.begin(9600);
   if (!SD.begin(SD_ChipSelectPin)) {
     //Serial.println("SD fail");
@@ -100,27 +109,37 @@ void setup() {
  
 void loop() {
 
-  if (digitalRead(PIN_BUTTON_GO) == HIGH)
+ /* strip.setPixelColor(0, RED);
+  strip.setPixelColor(1, RED);
+  strip.setPixelColor(2, RED);
+  strip.setPixelColor(3, RED);
+  strip.setPixelColor(4, RED);
+  strip.setPixelColor(5, RED);
+  strip.setPixelColor(6, RED);
+  strip.setPixelColor(7, RED);
+  strip.show();
+  return;*/
+  
+  /*if (digitalRead(PIN_BUTTON_GO) == HIGH)
   {
-    chase(strip.Color(0, 255, 0));   // green
+    chase(GREEN);   // green
     tone(PIN_SPEAKER, TONE_DROP_HZ, 100);
     
   }
   else if (digitalRead(PIN_BUTTON_GO) == LOW)
   {
     
-    chase(strip.Color(255, 0, 0)); // Red
+    chase(RED); // Red
   }
-  return;
+  return;*/
 
-  if (digitalRead(PIN_BUTTON_GO) == HIGH) {
+  if (digitalRead(PIN_BUTTON_GO) == LOW) {
     FLAG_BUTTON_PRESSED = 0; // reset
   }
-  else if (digitalRead(PIN_BUTTON_GO) == LOW)
+  else if (digitalRead(PIN_BUTTON_GO) == HIGH)
   {
     if (FLAG_SEQUENCE_RUNNING) {
       FLAG_ABORT_DROP = 1;
-      digitalWrite(LED_BUILTIN, HIGH);
     }
     if (!FLAG_BUTTON_PRESSED) {
       FLAG_BUTTON_PRESSED = 1;
@@ -142,6 +161,8 @@ int getCurrentStep() {
 
 // likely needs an interrupt
 void begin_sequence() {
+  digitalWrite(LED_BUILTIN, HIGH);
+  
   int start_time = millis();
 
   FLAG_SEQUENCE_RUNNING = 1;
@@ -151,6 +172,10 @@ void begin_sequence() {
   int timer_start = 0;
 
   //printf("array %lu \n", sizeof(&gate_steps)-1);
+  int wait_timer = millis() + random(DELAY_RAND_MIN,DELAY_RAND_MAX+1);
+  tone(PIN_SPEAKER,TONE_DROP_HZ,100);
+  while((millis() < wait_timer) && (!FLAG_ABORT_DROP)) {
+  }
 
   while((step < gate_step_count) && (!FLAG_ABORT_DROP)) {
     int now = millis();
@@ -187,9 +212,12 @@ void begin_sequence() {
   stop_tone();
   led_reset();
   if (FLAG_ABORT_DROP) {
-    abort_seq();
+    //abort_seq();
     FLAG_ABORT_DROP = 0;
   }
+
+  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(PIN_RELAY, LOW);
 }
  
 static void chase(uint32_t c) {
@@ -217,6 +245,7 @@ void light_start_seq_led(int step) {
       strip.setPixelColor(5, YELLOW);
       break;
     case 4:
+      drop_gate();
       strip.setPixelColor(6, GREEN);
       strip.setPixelColor(7, GREEN);
       break;
@@ -238,19 +267,18 @@ void start_tone(int hz) {
 }
 
 void stop_tone() {
-  digitalWrite(LED_BUILTIN, LOW);
   noTone(PIN_SPEAKER);
 }
 
 void abort_seq() {
+  for(int i=0;i<8;i++) {
+    strip.setPixelColor(i,GREEN);
+  }
+  strip.show();
   tone(PIN_SPEAKER, TONE_ABORT_1_HZ, DELAY_ABORT_TONE_1_MS);
   delay(DELAY_ABORT_TONE_1_MS);
   tone(PIN_SPEAKER, TONE_ABORT_2_HZ, DELAY_ABORT_TONE_2_MS);
   led_reset();
-  for(int i=0;i<8;i++) {
-    strip.setPixelColor(i,strip.Color(0, 255, 0));
-  }
-  strip.show();
   delay(3000);
   set_ready();
 }
@@ -264,7 +292,8 @@ void set_ready() {
 void drop_gate() {
   // if gate armed
     // trigger relay drop
-    // set gate LED to green 
+    // set gate LED to green   
+    digitalWrite(PIN_RELAY, HIGH);
 }
 
 // called when reed sensor triggered
@@ -275,6 +304,13 @@ void arm_gate() {
 
   // beep
  
+}
+
+// interrrupt
+void Interrupt1()
+{
+   FLAG_ABORT_DROP = 1;
+  abort_seq();
 }
 
 
