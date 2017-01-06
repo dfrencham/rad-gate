@@ -2,6 +2,8 @@
 // released under the GPLv3 license to match the rest of the AdaFruit NeoPixel library
 
 #include <Adafruit_NeoPixel.h>
+#include <SoftwareSerial.h>
+#include "Adafruit_Soundboard.h"
 #ifdef __AVR__
   #include <avr/power.h>
 #endif
@@ -20,24 +22,26 @@
 #define TONE_ABORT_1_HZ 740
 #define TONE_ABORT_2_HZ 680
 
-// Which pin on the Arduino is connected to the NeoPixels?
-// On a Trinket or Gemma we suggest changing this to 1
 #define PIN_NEO_PIXEL 7
 #define PIN_BUTTON_GO 2
 #define PIN_SPEAKER 5
 #define PIN_RELAY 4
+#define PIN_LED_ACTIVE 9
 #define PIN_GATE_STATUS_LED_RED 18
 #define PIN_GATE_STATUS_LED_GREEN 19
+#define SFX_TX 11
+#define SFX_RX 10
+#define SFX_RST 12
+#define SFX_ACT 13
 
-// How many NeoPixels are attached to the Arduino?
-#define NUMPIXELS      8
+#define NUMPIXELS 8
 
-//TMRpcm tmrpcm;
-
-// When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
-// Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
-// example for more information on possible values.
+// LED strip init
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(8, PIN_NEO_PIXEL, NEO_RGBW + NEO_KHZ800);
+
+// soundfx board init
+SoftwareSerial ss = SoftwareSerial(SFX_TX, SFX_RX);
+Adafruit_Soundboard sfx = Adafruit_Soundboard(&ss, NULL, SFX_RST);
 
 struct gate_step {
   int tone_length;
@@ -70,6 +74,10 @@ uint32_t YELLOW = strip.Color(255, 255, 0, 10);
 uint32_t BLUE = strip.Color(0, 0, 255);
 uint32_t WHITE = strip.Color(0, 0, 0, 255);
 
+// sounds
+uint8_t SFX_PREP = 3;
+uint8_t SFX_WATCH_GATE = 1;
+
   /*chase(strip.Color(255, 0, 0)); // Red
   chase(strip.Color(0, 255, 0)); // Green
   chase(strip.Color(0, 0, 255)); // Blue
@@ -80,10 +88,12 @@ uint32_t WHITE = strip.Color(0, 0, 0, 255);
   */
 
 void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);
+  //pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(PIN_LED_ACTIVE, OUTPUT);
   pinMode(PIN_SPEAKER, OUTPUT);
   pinMode(PIN_BUTTON_GO, INPUT_PULLUP);
   pinMode(PIN_RELAY, OUTPUT);
+  pinMode(SFX_ACT, INPUT);
   attachInterrupt(1, Interrupt1, RISING);
   digitalWrite(3, HIGH); // interrupt on 3
   digitalWrite(PIN_RELAY, LOW);
@@ -105,6 +115,12 @@ void setup() {
   }
   //tmrpcm.setVolume(6);
   tmrpcm.play("1.wav");*/
+  
+  // init SFX serial
+  ss.begin(9600);
+  
+  Serial.begin(115200);
+  serial_print("Gate controller initialised");
 }
  
 void loop() {
@@ -161,7 +177,10 @@ int getCurrentStep() {
 
 // likely needs an interrupt
 void begin_sequence() {
-  digitalWrite(LED_BUILTIN, HIGH);
+
+  serial_print("Sequence begin");
+  //digitalWrite(LED_BUILTIN, HIGH);  // turn on LED
+  digitalWrite(PIN_LED_ACTIVE, HIGH);  // turn on LED
   
   int start_time = millis();
 
@@ -171,12 +190,32 @@ void begin_sequence() {
   int waiting = 0;
   int timer_start = 0;
 
+  serial_print("Play Sample1");
+  sfx.playTrack(SFX_PREP);
+  delay(50);
+  while (digitalRead(SFX_ACT) == LOW) {
+    // wait
+  }
+  delay(1750);
+  serial_print("Play Sample2");
+  sfx.playTrack(SFX_WATCH_GATE);
+  delay(50);
+  while (digitalRead(SFX_ACT) == LOW) {
+    // wait
+  }
+  serial_print("SFX Done");
+  
   //printf("array %lu \n", sizeof(&gate_steps)-1);
-  int wait_timer = millis() + random(DELAY_RAND_MIN,DELAY_RAND_MAX+1);
-  tone(PIN_SPEAKER,TONE_DROP_HZ,100);
+  int rand_delay = random(DELAY_RAND_MIN,DELAY_RAND_MAX+1);
+  
+  serial_print_val("Random wait time",rand_delay);
+  
+  int wait_timer = millis() + rand_delay;
+  //tone(PIN_SPEAKER,TONE_DROP_HZ,100);
   while((millis() < wait_timer) && (!FLAG_ABORT_DROP)) {
   }
-
+  serial_print("Wait timer done");
+  
   while((step < gate_step_count) && (!FLAG_ABORT_DROP)) {
     int now = millis();
     int timer = now - timer_start;
@@ -206,7 +245,6 @@ void begin_sequence() {
       waiting = 1;
     }
     FLAG_SEQUENCE_RUNNING = 0;
-    ////printf("step %i \n", step);
   }
   FLAG_SEQUENCE_RUNNING = 0;
   stop_tone();
@@ -216,8 +254,10 @@ void begin_sequence() {
     FLAG_ABORT_DROP = 0;
   }
 
-  digitalWrite(LED_BUILTIN, LOW);
+  //digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(PIN_LED_ACTIVE, LOW);
   digitalWrite(PIN_RELAY, LOW);
+  serial_print("Sequence complete");
 }
  
 static void chase(uint32_t c) {
@@ -229,25 +269,48 @@ static void chase(uint32_t c) {
   }
 }
 
+void serial_print(const char* print_string) {
+  if (Serial) {
+    Serial.print("[");
+    Serial.print(millis());
+    Serial.print("] ");
+    Serial.print(print_string);
+    Serial.print("\n");
+  }
+}
+
+void serial_print_val(const char* print_string, int print_val) {
+    if (Serial) {
+          Serial.print("[");
+          Serial.print(millis());
+          Serial.print("] ");
+          Serial.print(print_string);
+          Serial.print(" ");
+          Serial.print(print_val);
+          Serial.print("\n");
+    }
+}
+
 void light_start_seq_led(int step) {
+  serial_print_val("Set LED", step);
   switch (step) {
     case 1:
       led_reset(); 
-      strip.setPixelColor(0, RED);
-      strip.setPixelColor(1, RED);
+      strip.setPixelColor(6, RED);
+      strip.setPixelColor(7, RED);
       break;
     case 2:
-      strip.setPixelColor(2, YELLOW);
-      strip.setPixelColor(3, YELLOW);
-      break;
-    case 3:
       strip.setPixelColor(4, YELLOW);
       strip.setPixelColor(5, YELLOW);
       break;
+    case 3:
+      strip.setPixelColor(2, YELLOW);
+      strip.setPixelColor(3, YELLOW);
+      break;
     case 4:
       drop_gate();
-      strip.setPixelColor(6, GREEN);
-      strip.setPixelColor(7, GREEN);
+      strip.setPixelColor(0, GREEN);
+      strip.setPixelColor(1, GREEN);
       break;
      default:
       led_reset();
@@ -309,8 +372,9 @@ void arm_gate() {
 // interrrupt
 void Interrupt1()
 {
+   serial_print("Interrupt triggered");
    FLAG_ABORT_DROP = 1;
-  abort_seq();
+   abort_seq();
 }
 
 
