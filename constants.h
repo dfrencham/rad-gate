@@ -1,7 +1,13 @@
 /*****************************************
- *  constants.h 
+ *  RemoteArDuino (RAD) Gate
+ *  constants.h
  *  (c) Danny Frencham 2017
  *****************************************/
+
+#ifndef _CONSTANTS_H
+#define _CONSTANTS_H
+
+#include <Adafruit_NeoPixel.h>
 
 #define DELAY_DROP_TONE_MS 60
 #define DELAY_DROP_TONE_FINAL_MS 2250
@@ -34,33 +40,23 @@
 
 #define ENABLE_VOICE_CADENCE 1
 
+// colours
+extern uint32_t ORANGE;
+extern uint32_t RED;
+extern uint32_t GREEN;
+extern uint32_t YELLOW;
+extern uint32_t BLUE;
+extern uint32_t WHITE;
+
 // sounds
-uint8_t SFX_PREP = 3;
-uint8_t SFX_WATCH_GATE = 1;
+extern uint8_t SFX_PREP;
+extern uint8_t SFX_WATCH_GATE;
 
-// colors
-/*chase(strip.Color(255, 0, 0)); // Red
-chase(strip.Color(0, 255, 0)); // Green
-chase(strip.Color(0, 0, 255)); // Blue
-chase(strip.Color(44, 42, 0)); // yellow
-chase(strip.Color(24, 0, 24)); // magenta
-chase(strip.Color(44, 21, 0)); // redest orange
-chase(strip.Color(255, 40, 5)); // orange
-*/
-
-struct gate_step {
-  int tone_length;
-  int wait_length;
+//struct gate_steps;
+typedef struct {
+  unsigned long  tone_length;
+  unsigned long  wait_length;
   int light_num;
-};
+} gate_step;
 
-
-struct gate_step gate_steps[] =  {
-  { DELAY_DROP_TONE_MS, 0, 1 },
-  { 0, 60, 0 },
-  { DELAY_DROP_TONE_MS, 0, 2 },
-  { 0, 60, 0 },
-  { DELAY_DROP_TONE_MS, 0, 3 },
-  { 0, 60, 0 },
-  { DELAY_DROP_TONE_FINAL_MS, 0, 4 }
-};
+#endif
