@@ -3,11 +3,7 @@
  *  (c) Danny Frencham 2017
  *****************************************/
 
-#include <Arduino.h>
 #include <SoftwareSerial.h>
-#ifdef __AVR__
-  #include <avr/power.h>
-#endif
 #include "constants.h"
 #include "utility.h"
 #include "AudioFX.h"
