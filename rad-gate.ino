@@ -1,18 +1,13 @@
 /*****************************************
  *  RemoteArDuino (RAD) Gate
- *  bmxgate.ino
  *  (c) Danny Frencham 2017
  *****************************************/
 
 #include <Arduino.h>
 #include <SoftwareSerial.h>
-
 #ifdef __AVR__
   #include <avr/power.h>
 #endif
-
-#include <Adafruit_NeoPixel.h>
-
 #include "constants.h"
 #include "utility.h"
 #include "AudioFX.h"
@@ -20,14 +15,14 @@
 #include "Gate.h"
 #include "Sequence.h"
 
+// declarations
 bool buttonPressed = 0;
-
 LightTree lighttree = LightTree(PIN_NEO_PIXEL);
 AudioFX audio = AudioFX();
 Gate gate = Gate();
 Sequence sequence = Sequence(&gate,&audio,&lighttree);
 
-// interrrupt
+// interrrupt handler
 void Interrupt1()
 {
   if (gate.is_abortable() && !gate.is_aborted()) {
@@ -57,7 +52,6 @@ void setup() {
 }
 
 void loop() {
-
   if (digitalRead(PIN_BUTTON_GO) == LOW) {
     buttonPressed = 0; // reset
   }
@@ -72,10 +66,4 @@ void loop() {
       sequence.begin_sequence();
     } // else still holding button
   }
-
-  // to do - reed switch magnet control
-  /*if (digitalRead(PIN_REED_SWITCH) == LOW)
-    led.set_status(GREEN);
-  else
-    led.set_status(BLUE); */
 }
