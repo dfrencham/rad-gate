@@ -20,17 +20,12 @@
 #include "Gate.h"
 #include "Sequence.h"
 
+bool buttonPressed = 0;
+
 LightTree lighttree = LightTree(PIN_NEO_PIXEL);
 AudioFX audio = AudioFX();
 Gate gate = Gate();
 Sequence sequence = Sequence(&gate,&audio,&lighttree);
-
-// forward declarations
-void setup();
-void begin_sequence();
-void abort_seq();
-void set_ready();
-void loop();
 
 // interrrupt
 void Interrupt1()
@@ -58,11 +53,11 @@ void setup() {
 
   Serial.begin(115200);
   serial_print("Gate controller initialised");
+  serial_print(VERSION);
 }
 
 void loop() {
 
-  bool buttonPressed = 0;
   if (digitalRead(PIN_BUTTON_GO) == LOW) {
     buttonPressed = 0; // reset
   }

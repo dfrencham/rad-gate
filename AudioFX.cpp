@@ -1,3 +1,8 @@
+/*****************************************
+ *  RemoteArDuino (RAD) Gate
+ *  (c) Danny Frencham 2017
+ *****************************************/
+
 #include <SoftwareSerial.h>
 #include "Adafruit_Soundboard.h"
 

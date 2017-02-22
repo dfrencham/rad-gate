@@ -1,6 +1,5 @@
 /*****************************************
  *  RemoteArDuino (RAD) Gate
- *  constants.h
  *  (c) Danny Frencham 2017
  *****************************************/
 
@@ -8,6 +7,8 @@
 #define _CONSTANTS_H
 
 #include <Adafruit_NeoPixel.h>
+
+#define VERSION "0.5.0"
 
 #define DELAY_DROP_TONE_MS 60
 #define DELAY_DROP_TONE_FINAL_MS 2250

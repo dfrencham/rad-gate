@@ -1,3 +1,8 @@
+/*****************************************
+ *  RemoteArDuino (RAD) Gate
+ *  (c) Danny Frencham 2017
+ *****************************************/
+
 #include "constants.h"
 #include "utility.h"
 #include "Sequence.h"

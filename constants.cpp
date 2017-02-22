@@ -1,3 +1,7 @@
+/*****************************************
+ *  RemoteArDuino (RAD) Gate
+ *  (c) Danny Frencham 2017
+ *****************************************/
 
 #include <Adafruit_NeoPixel.h>
 
