@@ -13,8 +13,11 @@
 
 // declarations
 bool buttonPressed = 0;
+
+SoftwareSerial ss = SoftwareSerial(SFX_TX, SFX_RX);
+Adafruit_Soundboard sfx = Adafruit_Soundboard(&ss, NULL, SFX_RST);
+AudioFX audio = AudioFX(&sfx);
 LightTree lighttree = LightTree(PIN_NEO_PIXEL);
-AudioFX audio = AudioFX();
 Gate gate = Gate();
 Sequence sequence = Sequence(&gate,&audio,&lighttree);
 
@@ -31,6 +34,7 @@ void Interrupt1()
 }
 
 void setup() {
+  ss.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(PIN_LED_ACTIVE, OUTPUT);
   pinMode(PIN_SPEAKER, OUTPUT);
@@ -60,6 +64,8 @@ void loop() {
     if (!buttonPressed) {
       buttonPressed = 1;
       sequence.begin_sequence();
+      //sfx.playTrack(SFX_PREP);
+      //audio.play_sound_samples();
     } // else still holding button
   }
 }

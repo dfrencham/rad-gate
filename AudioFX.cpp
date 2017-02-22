@@ -10,15 +10,8 @@
 #include "utility.h"
 #include "AudioFX.h"
 
-AudioFX::AudioFX() {
-
-  SoftwareSerial ss = SoftwareSerial(SFX_TX, SFX_RX);
-  ss.begin(9600);
-  Adafruit_Soundboard sfx = Adafruit_Soundboard(&ss, NULL, SFX_RST);
-}
-
-AudioFX::~AudioFX() {
-
+AudioFX::AudioFX(Adafruit_Soundboard *sbref) {
+  sfx = sbref;
 }
 
 void AudioFX::start_tone(int hz) {
