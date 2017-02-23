@@ -3,6 +3,8 @@
 
 This project is an Open Source gate controller for BMX gates. You will need to build the controller yourself.
 
+Please see the [Change Log](CHANGELOG.md)
+
 ## Features
 
 - spoken cadence
