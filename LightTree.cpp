@@ -9,7 +9,13 @@
 
 LightTree::LightTree(int pin) {
 
+#ifdef HARDWARE_NEOPIXEL_RGB
+  _strip = Adafruit_NeoPixel(8, pin, NEO_GRB + NEO_KHZ800);
+#endif
+#ifdef HARDWARE_NEOPIXEL_RGBW
   _strip = Adafruit_NeoPixel(8, pin, NEO_RGBW + NEO_KHZ800);
+#endif
+
   _strip.begin();
   _strip.setBrightness(255);
 }

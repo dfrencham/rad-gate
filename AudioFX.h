@@ -4,6 +4,7 @@
  *****************************************/
 
 #include "Adafruit_Soundboard.h"
+#include <JQ6500_Serial.h>
 
 #ifndef _AUDIO_H
 #define _AUDIO_H
@@ -13,6 +14,7 @@ class AudioFX {
   public:
 
     AudioFX(Adafruit_Soundboard *sbref);
+    AudioFX(JQ6500_Serial *jref);
     void start_tone(int hz);
     void stop_tone();
     void play_sound_samples();
@@ -20,6 +22,8 @@ class AudioFX {
 
   private:
     Adafruit_Soundboard *sfx;
+    JQ6500_Serial *jfx;
+    void play_sample(uint8_t track);
 
 };
 

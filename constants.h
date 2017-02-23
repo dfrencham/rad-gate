@@ -8,7 +8,18 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define VERSION "0.5.0"
+#define VERSION "0.5.1"
+
+// uncomment for RGBW
+#define HARDWARE_NEOPIXEL_RGBW
+// uncomment for RGB
+//#define HARDWARE_NEOPIXEL_RGB
+
+// uncomment if using Adafruit sound fx boards
+#define HARDWARE_SOUNDBOARD_ADAFRUIT
+// set to "JQ6500" if using the cheap and friendly Aliexpress JQ6500
+// #define HARDWARE_SOUNDBOARD_JQ6500
+
 
 #define DELAY_DROP_TONE_MS 60
 #define DELAY_DROP_TONE_FINAL_MS 2250

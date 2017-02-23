@@ -14,9 +14,16 @@
 // declarations
 bool buttonPressed = 0;
 
-SoftwareSerial ss = SoftwareSerial(SFX_TX, SFX_RX);
-Adafruit_Soundboard sfx = Adafruit_Soundboard(&ss, NULL, SFX_RST);
-AudioFX audio = AudioFX(&sfx);
+#ifdef HARDWARE_SOUNDBOARD_ADAFRUIT
+  SoftwareSerial ss = SoftwareSerial(SFX_TX, SFX_RX);
+  Adafruit_Soundboard sfx = Adafruit_Soundboard(&ss, NULL, SFX_RST);
+  AudioFX audio = AudioFX(&sfx);
+#endif
+#ifdef HARDWARE_SOUNDBOARD_JQ6500
+  JQ6500_Serial mp3(SFX_TX,SFX_RX);
+  AudioFXaudio = AudioFX(&mp3);
+#endif
+
 LightTree lighttree = LightTree(PIN_NEO_PIXEL);
 Gate gate = Gate();
 Sequence sequence = Sequence(&gate,&audio,&lighttree);
@@ -34,7 +41,15 @@ void Interrupt1()
 }
 
 void setup() {
-  ss.begin(9600);
+  
+  #ifdef HARDWARE_SOUNDBOARD_ADAFRUIT
+    ss.begin(9600);
+  #endif
+  #ifdef HARDWARE_SOUNDBOARD_JQ6500
+    mp3.begin(9600);
+    mp3.reset();
+  #endif
+
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(PIN_LED_ACTIVE, OUTPUT);
   pinMode(PIN_SPEAKER, OUTPUT);
@@ -42,6 +57,7 @@ void setup() {
   pinMode(PIN_RELAY, OUTPUT);
   pinMode(SFX_ACT, INPUT);
   //pinMode(PIN_REED_SWITCH, INPUT_PULLUP);
+  
   attachInterrupt(digitalPinToInterrupt(1), Interrupt1, RISING);
   digitalWrite(3, HIGH); // interrupt on 3
   digitalWrite(PIN_RELAY, LOW); // turn on magnet
@@ -49,6 +65,8 @@ void setup() {
   Serial.begin(115200);
   serial_print("Gate controller initialised");
   serial_print(VERSION);
+
+  lighttree.ready();
 }
 
 void loop() {

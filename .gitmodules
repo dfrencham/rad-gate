@@ -7,3 +7,6 @@
 [submodule "libs/Adafruit_Soundboard"]
 	path = libs/Adafruit_Soundboard
 	url = https://github.com/adafruit/Adafruit_Soundboard_library
+[submodule "JQ6500_Serial"]
+	path = JQ6500_Serial
+	url = https://github.com/sleemanj/JQ6500_Serial
