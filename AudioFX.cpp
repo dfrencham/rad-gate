@@ -60,7 +60,7 @@ void AudioFX::play_sample(uint8_t track) {
     serial_print("SFX playing on Adafruit device");
     sfx->playTrack(track);
     delay(50);
-    while (digitalRead(SFX_ACT) == LOW) {
+    while (digitalRead(PIN_SFX_ACT) == LOW) {
       // wait for sample to finish
     }
   }

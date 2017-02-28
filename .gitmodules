@@ -10,3 +10,6 @@
 [submodule "JQ6500_Serial"]
 	path = JQ6500_Serial
 	url = https://github.com/sleemanj/JQ6500_Serial
+[submodule "libs/Volume"]
+	path = libs/Volume
+	url = https://github.com/connornishijima/arduino-volume1

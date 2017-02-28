@@ -11,17 +11,21 @@
 #include "Gate.h"
 #include "Sequence.h"
 
+#ifdef USE_MAGIC_VOLUME
+#include "Volume.h"
+#endif
+
 // declarations
 bool buttonPressed = 0;
 
 #ifdef HARDWARE_SOUNDBOARD_ADAFRUIT
-  SoftwareSerial ss = SoftwareSerial(SFX_TX, SFX_RX);
-  Adafruit_Soundboard sfx = Adafruit_Soundboard(&ss, NULL, SFX_RST);
+  SoftwareSerial ss = SoftwareSerial(PIN_SFX_TX, PIN_SFX_RX);
+  Adafruit_Soundboard sfx = Adafruit_Soundboard(&ss, NULL, PIN_SFX_RST);
   AudioFX audio = AudioFX(&sfx);
 #endif
 #ifdef HARDWARE_SOUNDBOARD_JQ6500
-  JQ6500_Serial mp3(SFX_TX,SFX_RX);
-  AudioFXaudio = AudioFX(&mp3);
+  JQ6500_Serial mp3(PIN_SFX_TX,PIN_SFX_RX);
+  AudioFX audio = AudioFX(&mp3);
 #endif
 
 LightTree lighttree = LightTree(PIN_NEO_PIXEL);
@@ -41,7 +45,11 @@ void Interrupt1()
 }
 
 void setup() {
-  
+
+  #ifdef USE_MAGIC_VOLUME
+    Volume vol;
+  #endif
+
   #ifdef HARDWARE_SOUNDBOARD_ADAFRUIT
     ss.begin(9600);
   #endif
@@ -55,11 +63,11 @@ void setup() {
   pinMode(PIN_SPEAKER, OUTPUT);
   pinMode(PIN_BUTTON_GO, INPUT_PULLUP);
   pinMode(PIN_RELAY, OUTPUT);
-  pinMode(SFX_ACT, INPUT);
+  pinMode(PIN_SFX_ACT, INPUT);
   //pinMode(PIN_REED_SWITCH, INPUT_PULLUP);
-  
+
   attachInterrupt(digitalPinToInterrupt(1), Interrupt1, RISING);
-  digitalWrite(3, HIGH); // interrupt on 3
+  digitalWrite(PIN_BUTTON_GO, HIGH); // interrupt on 3
   digitalWrite(PIN_RELAY, LOW); // turn on magnet
 
   Serial.begin(115200);
