@@ -1,5 +1,10 @@
 #Change Log
 
+# 0.6.0
+- Changed Volume library for Volume3
+- Fixed issues with JCQ500 library support
+- Added schematic
+
 # 0.5.1
 - Added JQ6500 sound module support
 - Added RGB light tree support

@@ -11,6 +11,7 @@
 #include "constants.h"
 #include "utility.h"
 #include "AudioFX.h"
+#include "Volume3.h"
 
 #ifdef HARDWARE_SOUNDBOARD_ADAFRUIT
   bool SFX_ADAFRUIT = 1;
@@ -18,6 +19,8 @@
 #ifdef HARDWARE_SOUNDBOARD_JQ6500
   bool SFX_ADAFRUIT = 0;
 #endif
+
+Volume vol;
 
 AudioFX::AudioFX(Adafruit_Soundboard *sbref) {
   sfx = sbref;
@@ -28,11 +31,12 @@ AudioFX::AudioFX(JQ6500_Serial *jref) {
 }
 
 void AudioFX::start_tone(int hz) {
-  tone(PIN_SPEAKER, TONE_DROP_HZ);
+  serial_print("Tone");
+  vol.tone(PIN_SPEAKER, TONE_DROP_HZ,TONE_VOLUME);
 }
 
 void AudioFX::stop_tone() {
-  noTone(PIN_SPEAKER);
+  vol.noTone();
 }
 
 void AudioFX::play_sound_samples() {
@@ -50,9 +54,11 @@ void AudioFX::play_sound_samples() {
 }
 
 void AudioFX::play_abort() {
-  tone(PIN_SPEAKER, TONE_ABORT_1_HZ, DELAY_ABORT_TONE_1_MS);
+  vol.tone(PIN_SPEAKER, TONE_ABORT_1_HZ, TONE_VOLUME);
   delay(DELAY_ABORT_TONE_1_MS);
-  tone(PIN_SPEAKER, TONE_ABORT_2_HZ, DELAY_ABORT_TONE_2_MS);
+  vol.tone(PIN_SPEAKER, TONE_ABORT_2_HZ, TONE_VOLUME);
+  delay(DELAY_ABORT_TONE_2_MS);
+  vol.noTone();
 }
 
 void AudioFX::play_sample(uint8_t track) {
@@ -75,4 +81,17 @@ void AudioFX::play_sample(uint8_t track) {
     }
   }
   return;
+}
+
+void AudioFX::play_coin_up() {
+  int start_vol = 130;
+  vol.tone(PIN_SPEAKER,1025,start_vol); // pa
+  delay(70);
+  int v = start_vol;
+  while(v > 0){
+    vol.tone(PIN_SPEAKER,2090,v); // ting!
+    delay(3);
+    v--;
+  }
+  vol.noTone();
 }

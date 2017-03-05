@@ -8,7 +8,7 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define VERSION "0.5.1"
+#define VERSION "0.6.0"
 
 // uncomment for RGBW
 #define HARDWARE_NEOPIXEL_RGBW
@@ -18,11 +18,7 @@
 // uncomment if using Adafruit sound fx boards
 //#define HARDWARE_SOUNDBOARD_ADAFRUIT
 // set to "JQ6500" if using the cheap and friendly Aliexpress JQ6500
-#define HARDWARE_SOUNDBOARD_JQ6500
-
-// if defined, we can change volume of tones
-// this will only work if PIN_SPEAKER is set as 5 or 6
-//#define USE_MAGIC_VOLUME
+#define HARDWARE_SOUNDBOARD_JQ6500 1
 
 #define DELAY_DROP_TONE_MS 60
 #define DELAY_DROP_TONE_FINAL_MS 2250
@@ -37,15 +33,17 @@
 #define TONE_GATE_RISE 1150
 #define TONE_ABORT_1_HZ 740
 #define TONE_ABORT_2_HZ 680
+#define TONE_VOLUME 130
 
 #define PIN_NEO_PIXEL 2
 #define PIN_BUTTON_GO 3
-#define PIN_SPEAKER 6
+// speaker has to be on this pin (on the Uno) for Volume3 library
+#define PIN_SPEAKER 9
 #define PIN_RELAY 8
-#define PIN_LED_ACTIVE 5
+#define PIN_LED_ACTIVE 6
 #define PIN_GATE_STATUS_LED_RED 18
 #define PIN_GATE_STATUS_LED_GREEN 19
-#define PIN_SFX_TX 11
+#define PIN_SFX_TX 13
 #define PIN_SFX_RX 12
 
 #define PIN_SFX_RST 7

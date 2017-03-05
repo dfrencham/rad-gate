@@ -10,13 +10,12 @@
 #include "LightTree.h"
 #include "Gate.h"
 #include "Sequence.h"
-
-#ifdef USE_MAGIC_VOLUME
-#include "Volume.h"
-#endif
+#include <JQ6500_Serial.h>
+#include "Volume3.h"
 
 // declarations
 bool buttonPressed = 0;
+//Volume vol;
 
 #ifdef HARDWARE_SOUNDBOARD_ADAFRUIT
   SoftwareSerial ss = SoftwareSerial(PIN_SFX_TX, PIN_SFX_RX);
@@ -24,7 +23,8 @@ bool buttonPressed = 0;
   AudioFX audio = AudioFX(&sfx);
 #endif
 #ifdef HARDWARE_SOUNDBOARD_JQ6500
-  JQ6500_Serial mp3(PIN_SFX_TX,PIN_SFX_RX);
+  ///JQ6500_Serial mp3(PIN_SFX_TX,PIN_SFX_RX);
+  JQ6500_Serial mp3(13,12);
   AudioFX audio = AudioFX(&mp3);
 #endif
 
@@ -46,38 +46,41 @@ void Interrupt1()
 
 void setup() {
 
-  #ifdef USE_MAGIC_VOLUME
-    Volume vol;
-  #endif
+  Serial.begin(115200);
 
   #ifdef HARDWARE_SOUNDBOARD_ADAFRUIT
     ss.begin(9600);
+    serial_print("Adafruit Sound board initialised");
   #endif
   #ifdef HARDWARE_SOUNDBOARD_JQ6500
     mp3.begin(9600);
     mp3.reset();
+    mp3.setVolume(25);
+    mp3.setLoopMode(MP3_LOOP_NONE);
+    serial_print("JQ6500 initialised");
   #endif
 
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(PIN_LED_ACTIVE, OUTPUT);
   pinMode(PIN_SPEAKER, OUTPUT);
-  pinMode(PIN_BUTTON_GO, INPUT_PULLUP);
+  pinMode(PIN_BUTTON_GO, INPUT);
   pinMode(PIN_RELAY, OUTPUT);
   pinMode(PIN_SFX_ACT, INPUT);
   //pinMode(PIN_REED_SWITCH, INPUT_PULLUP);
 
-  attachInterrupt(digitalPinToInterrupt(1), Interrupt1, RISING);
-  digitalWrite(PIN_BUTTON_GO, HIGH); // interrupt on 3
+  // not working?
+  //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_GO), Interrupt1, HIGH);
   digitalWrite(PIN_RELAY, LOW); // turn on magnet
 
-  Serial.begin(115200);
   serial_print("Gate controller initialised");
   serial_print(VERSION);
-
   lighttree.ready();
+  delay(500);
+  audio.play_coin_up();
 }
 
 void loop() {
+
   if (digitalRead(PIN_BUTTON_GO) == LOW) {
     buttonPressed = 0; // reset
   }
@@ -90,8 +93,6 @@ void loop() {
     if (!buttonPressed) {
       buttonPressed = 1;
       sequence.begin_sequence();
-      //sfx.playTrack(SFX_PREP);
-      //audio.play_sound_samples();
     } // else still holding button
   }
 }

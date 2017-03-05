@@ -25,7 +25,8 @@ void Sequence::begin_sequence() {
     { 0, 60, 0 },
     { DELAY_DROP_TONE_MS, 0, 3 },
     { 0, 60, 0 },
-    { DELAY_DROP_TONE_FINAL_MS, 0, 4 }
+    { DELAY_DROP_TONE_FINAL_MS, 0, 4 },
+    { 0, 0, 0 }  
   };
 
   serial_print("Sequence begin");
@@ -52,12 +53,15 @@ void Sequence::begin_sequence() {
     if (playing_tone && (timer >= gate_steps[step].tone_length)) {
       // reset timer
       playing_tone = 0;
+      serial_print_val("Stop tone",step);
+      serial_print_val("Tone length",gate_steps[step].tone_length);
       audio->stop_tone();
       step++;
     }
     if (!playing_tone && (gate_steps[step].tone_length > 0)) {
       timer_start = now;
       audio->start_tone(TONE_DROP_HZ);
+      serial_print_val("LED step",step);
       lighttree->light_start_seq_led(gate_steps[step].light_num, gate);
       playing_tone = 1;
     }

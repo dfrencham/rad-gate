@@ -19,6 +19,7 @@ class AudioFX {
     void stop_tone();
     void play_sound_samples();
     void play_abort();
+    void play_coin_up() ;
 
   private:
     Adafruit_Soundboard *sfx;
