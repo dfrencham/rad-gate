@@ -1,13 +1,13 @@
-#Change Log
+# Change Log
 
-# 0.7.1
+## 0.7.1
 - Changed pin assignments to improve circuit board layout
 
-# 0.7.0
+## 0.7.0
 - Removed Volume library entirely, added trim pot to design
 - switched from relay board to MOSFET
 
-# 0.6.0
+## 0.6.0
 - Changed Volume library for Volume3
 - Fixed issues with JCQ500 library support
 - Added schematic
