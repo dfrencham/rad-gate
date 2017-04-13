@@ -12,7 +12,7 @@
 - Fixed issues with JCQ500 library support
 - Added schematic
 
-# 0.5.1
+## 0.5.1
 - Added JQ6500 sound module support
 - Added RGB light tree support
 
