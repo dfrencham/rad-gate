@@ -13,7 +13,7 @@ Please see the [Change Log](CHANGELOG.md)
 - light tree
 - Conforms to BMX Australia / UCI gate cadence
 
-![Image of gate controller](redgate.jpg)
+![Image of gate controller](radgate.jpg)
 
 ## Requirements
 
