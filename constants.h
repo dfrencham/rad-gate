@@ -8,24 +8,27 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define VERSION "0.6.0"
+#define VERSION "0.7.1"
 
-// uncomment for RGBW
-#define HARDWARE_NEOPIXEL_RGBW
-// uncomment for RGB
-//#define HARDWARE_NEOPIXEL_RGB
+// uncomment for RGBW (for real Neopixels)
+//#define HARDWARE_NEOPIXEL_RGBW
+// uncomment for RGB (usually cheap Neopixel clones)
+#define HARDWARE_NEOPIXEL_RGB
 
 // uncomment if using Adafruit sound fx boards
 //#define HARDWARE_SOUNDBOARD_ADAFRUIT
 // set to "JQ6500" if using the cheap and friendly Aliexpress JQ6500
 #define HARDWARE_SOUNDBOARD_JQ6500 1
 
+// some inferior gate controllers don't BEEP at the correct pitch
+// frequence. Correct tones (in Hz) are below
 #define DELAY_DROP_TONE_MS 60
 #define DELAY_DROP_TONE_FINAL_MS 2250
 #define DELAY_GATE_RISE_WARN_MS 25
 #define DELAY_ABORT_TONE_1_MS 220
 #define DELAY_ABORT_TONE_2_MS 440
 
+// random start min and max
 #define DELAY_RAND_MIN 100
 #define DELAY_RAND_MAX 2700
 
@@ -35,21 +38,20 @@
 #define TONE_ABORT_2_HZ 680
 #define TONE_VOLUME 130
 
-#define PIN_NEO_PIXEL 2
-#define PIN_BUTTON_GO 3
-// speaker has to be on this pin (on the Uno) for Volume3 library
-#define PIN_SPEAKER 9
-#define PIN_RELAY 8
-#define PIN_LED_ACTIVE 6
+#define PIN_NEO_PIXEL 13 // light tree pin
+#define PIN_BUTTON_GO 12
+#define PIN_SPEAKER 11
+#define PIN_RELAY 8 // relay, or MOSFET
+#define PIN_LED_ACTIVE 5
 #define PIN_GATE_STATUS_LED_RED 18
 #define PIN_GATE_STATUS_LED_GREEN 19
-#define PIN_SFX_TX 13
-#define PIN_SFX_RX 12
+#define PIN_SFX_TX 10 // sound board transmit
+#define PIN_SFX_RX 9 // sound board receive
 
-#define PIN_SFX_RST 7
-#define PIN_SFX_ACT 9
+#define PIN_SFX_RST 2 // sound board reset
+#define PIN_SFX_ACT 1 // sound board active
 
-#define NUMPIXELS 8
+#define NUMPIXELS 8 // how many LEDS do you have?
 
 #define ENABLE_VOICE_CADENCE 1
 

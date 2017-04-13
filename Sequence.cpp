@@ -88,7 +88,7 @@ void Sequence::begin_sequence() {
 
   digitalWrite(PIN_LED_ACTIVE, LOW);
   digitalWrite(LED_BUILTIN, LOW);
-  digitalWrite(PIN_RELAY, LOW); // turn on magnet
+  digitalWrite(PIN_RELAY, HIGH); // turn on magnet
   serial_print("Sequence complete");
 }
 

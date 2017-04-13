@@ -13,6 +13,3 @@
 [submodule "libs/Volume"]
 	path = libs/Volume
 	url = https://github.com/connornishijima/arduino-volume1
-[submodule "libs/Volume3"]
-	path = libs/Volume3
-	url = https://github.com/connornishijima/arduino-volume3

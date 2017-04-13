@@ -13,5 +13,5 @@ uint32_t YELLOW = Adafruit_NeoPixel::Color(255, 255, 0, 10);
 uint32_t BLUE = Adafruit_NeoPixel::Color(0, 0, 255);
 uint32_t WHITE = Adafruit_NeoPixel::Color(0, 0, 0, 255);
 
-uint8_t SFX_PREP = 3;
-uint8_t SFX_WATCH_GATE = 1;
+uint8_t SFX_PREP = 1;
+uint8_t SFX_WATCH_GATE = 2;

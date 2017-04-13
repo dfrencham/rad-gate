@@ -19,13 +19,13 @@ class AudioFX {
     void stop_tone();
     void play_sound_samples();
     void play_abort();
-    void play_coin_up() ;
+    void play_power_on();
 
   private:
     Adafruit_Soundboard *sfx;
     JQ6500_Serial *jfx;
     void play_sample(uint8_t track);
-
+    void play_sample(uint8_t track, int playTime);
 };
 
 #endif

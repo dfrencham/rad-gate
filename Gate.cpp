@@ -42,7 +42,7 @@ void Gate::abort() {
 }
 
 void Gate::drop() {
-  digitalWrite(PIN_RELAY, HIGH);
+  digitalWrite(PIN_RELAY, LOW);
 }
 
 bool Gate::is_sequence_running() {
