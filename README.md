@@ -6,7 +6,7 @@ This project is an Open Source gate controller for BMX gates. You will need to b
 Please see:
 
  - [Change Log](CHANGELOG.md)
- - [To Do](ToDo.md)
+ - [To Do](doc/ToDo.md)
  - [Schematic (PDF)](doc/schematic.pdf)
  - [BMX Random Cadence Specification](doc/BMXCadence.md)
 
