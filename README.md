@@ -3,7 +3,12 @@
 
 This project is an Open Source gate controller for BMX gates. You will need to build the controller yourself.
 
-Please see the [Change Log](CHANGELOG.md)
+Please see:
+
+ - [Change Log](CHANGELOG.md)
+ - [To Do](ToDo.md)
+ - [Schematic (PDF)](doc/schematic.pdf)
+ - [BMX Random Cadence Specification](doc/BMXCadence.md)
 
 ## Features
 
@@ -13,7 +18,7 @@ Please see the [Change Log](CHANGELOG.md)
 - light tree
 - Conforms to BMX Australia / UCI gate cadence
 
-![Image of gate controller](radgate.jpg)
+![Image of gate controller](doc/radgate.jpg)
 
 ## Requirements
 
@@ -39,10 +44,6 @@ Please see the [Change Log](CHANGELOG.md)
 - The MOSFET circuit (with diode, LED, and MOSFET) can be switched out for a MOSFET module, or relay module.
 - The resistor values for the LEDs vary depending on your LED model and how bright you want it. Use a breadboard circuit to determine these.
 
-## Current limitations
-
-- When running from battery, there is no detection of low battery. This is a problem, because when charge gets too low, the gate drops. This may surprise the rider.
-
 ## Build
 
 This project can be built using the Arduino IDE, or on the command line:
@@ -53,4 +54,4 @@ user@host$ make
 
 ## Schematic
 
-![Image of gate controller schematic](schematic.png)
+![Image of gate controller schematic](doc/schematic.png)
