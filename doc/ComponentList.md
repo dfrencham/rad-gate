@@ -1,6 +1,6 @@
 # Component List
 
-| Part               | Notes |
+| Part&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Notes |
 | -------------------| ------------- |
 | Arduino            | Uno suggested, but other Arduinos would work fine |
 | Uno Proto shield   | *Only required if using Arduino Uno* <br /> ![Image of amp](part_proto.jpg) |
@@ -20,7 +20,7 @@
 | Resistor LED Magnet| *Value depends on LED* |
 | Resistor LED Seq   | *Value depends on LED* |
 | Resistor JQ6500    | If using the JQ6500, you need a 1k resistor between the TX pin and the Arduino |
-| RF Receiver board  | 315Mhz or 450Mhz RF receiver (momentary). The board should be the type that sends a high signal out of one of the pins when a signal is received. I've had mixed success with models from Aliexpress. Some have a range of only 10cm, others work from 10 meters+ away. The Superheterodyne receivers generally have a much better range. <br /> ![Image of amp](part_rf.jpg) The Adafruit boards are known to work well. |
+| RF Receiver board  | 315Mhz or 450Mhz RF receiver (momentary). The board should be the type that sends a high signal out of one of the pins when a signal is received. I've had mixed success with models from Aliexpress. Some have a range of only 10cm, others work from 10 meters+ away. The Superheterodyne receivers generally have a much better range. The Adafruit boards are known to work well. <br /> ![Image of amp](part_rf.jpg)  |
 | RF Remote control  | Remote control compatible with the RF receiver board you select. |
 | RBG LED Stick      | **For Light Tree** WS2812 5050 RGB LED stick (Adafruit Neopixel stick works too) |
 | Trim pot           | W502 |
