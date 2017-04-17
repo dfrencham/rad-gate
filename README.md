@@ -8,6 +8,7 @@ Please see:
  - [Change Log](CHANGELOG.md)
  - [To Do](doc/ToDo.md)
  - [Schematic (PDF)](doc/schematic.pdf)
+ - [Component List](doc/ComponentList.md)
  - [BMX Random Cadence Specification](doc/BMXCadence.md)
 
 ## Features
