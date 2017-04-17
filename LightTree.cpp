@@ -7,10 +7,15 @@
 #include "constants.h"
 #include "LightTree.h"
 
+int reverse_sequence = 0;
+
 LightTree::LightTree(int pin) {
 
 #ifdef HARDWARE_NEOPIXEL_RGB
   _strip = Adafruit_NeoPixel(8, pin, NEO_GRB + NEO_KHZ800);
+  // if we are using the cheap chinese pixel sticks, we need to
+  //  reverse the order for some odd reason
+  reverse_sequence = 1;
 #endif
 #ifdef HARDWARE_NEOPIXEL_RGBW
   _strip = Adafruit_NeoPixel(8, pin, NEO_RGBW + NEO_KHZ800);
@@ -25,21 +30,41 @@ void LightTree::light_start_seq_led(int step, Gate* gate) {
   switch (step) {
     case 1:
       led_reset();
-      _strip.setPixelColor(6, RED);
-      _strip.setPixelColor(7, RED);
+      if (reverse_sequence) {
+        _strip.setPixelColor(0, RED);
+        _strip.setPixelColor(1, RED);
+      } else {
+        _strip.setPixelColor(6, RED);
+        _strip.setPixelColor(7, RED);
+      }
       break;
     case 2:
-      _strip.setPixelColor(4, YELLOW);
-      _strip.setPixelColor(5, YELLOW);
+      if (reverse_sequence) {
+        _strip.setPixelColor(2, YELLOW);
+        _strip.setPixelColor(3, YELLOW);
+      } else {
+        _strip.setPixelColor(4, YELLOW);
+        _strip.setPixelColor(5, YELLOW);
+      }
       break;
     case 3:
-      _strip.setPixelColor(2, YELLOW);
-      _strip.setPixelColor(3, YELLOW);
+      if (reverse_sequence) {
+        _strip.setPixelColor(4, YELLOW);
+        _strip.setPixelColor(5, YELLOW);
+      } else {
+        _strip.setPixelColor(2, YELLOW);
+        _strip.setPixelColor(3, YELLOW);
+      }
       break;
     case 4:
       gate->drop();
-      _strip.setPixelColor(0, GREEN);
-      _strip.setPixelColor(1, GREEN);
+      if (reverse_sequence) {
+        _strip.setPixelColor(6, GREEN);
+        _strip.setPixelColor(7, GREEN);
+      } else {
+        _strip.setPixelColor(0, GREEN);
+        _strip.setPixelColor(1, GREEN);
+      }
       break;
      default:
       led_reset();
