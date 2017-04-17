@@ -1,6 +1,6 @@
 # Component List
 
-| Part&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Notes |
+| Part/Component&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Notes |
 | -------------------| ------------- |
 | Arduino            | Uno suggested, but other Arduinos would work fine |
 | Uno Proto shield   | *Only required if using Arduino Uno* <br /> ![Image of amp](part_proto.jpg) |
@@ -27,7 +27,7 @@
 
 ## Additional Components for DC Power
 
-| Part               | Notes |
+| Part/Component&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Notes |
 | -------------------| ------------- |
 | DC Adaptor | A 12v DC adaptor supplying at least 1.5amps. You might have luck with a smaller supply, but if the unit has intermittent start up failures, you should get a more powerful supply.  |
 
@@ -35,7 +35,7 @@
 
 If running from battery, there is no charge circuit, and no low battery warning circuit.
 
-| Part               | Notes |
+| Part/Component&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Notes |
 | -------------------| ------------- |
 | Alligator clips x2 | For battery connection |
 | Barrel plug        | |
