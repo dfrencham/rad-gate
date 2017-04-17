@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.7.2
+- Fixed light tree sequence for cheap NeoPixel stick clones (they seem to use reverse order addressing)
+
 ## 0.7.1
 - Changed pin assignments to improve circuit board layout
 
