@@ -63,6 +63,14 @@ extern uint32_t YELLOW;
 extern uint32_t BLUE;
 extern uint32_t WHITE;
 
+extern uint32_t RGB_ORANGE;
+extern uint32_t RGB_GREEN;
+extern uint32_t RGB_RED;
+extern uint32_t RGB_YELLOW;
+extern uint32_t RGB_BLUE;
+extern uint32_t RGB_PURPLE;
+extern uint32_t RGB_WHITE;
+
 // sounds
 extern uint8_t SFX_PREP;
 extern uint8_t SFX_WATCH_GATE;

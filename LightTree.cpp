@@ -7,15 +7,14 @@
 #include "constants.h"
 #include "LightTree.h"
 
-int reverse_sequence = 0;
+int rgbMode = 0;
 
 LightTree::LightTree(int pin) {
 
 #ifdef HARDWARE_NEOPIXEL_RGB
   _strip = Adafruit_NeoPixel(8, pin, NEO_GRB + NEO_KHZ800);
-  // if we are using the cheap chinese pixel sticks, we need to
-  //  reverse the order for some odd reason
-  reverse_sequence = 1;
+  // need to use different colours for RGB stick
+  rgbMode = 1;
 #endif
 #ifdef HARDWARE_NEOPIXEL_RGBW
   _strip = Adafruit_NeoPixel(8, pin, NEO_RGBW + NEO_KHZ800);
@@ -30,27 +29,27 @@ void LightTree::light_start_seq_led(int step, Gate* gate) {
   switch (step) {
     case 1:
       led_reset();
-      if (reverse_sequence) {
-        _strip.setPixelColor(0, RED);
-        _strip.setPixelColor(1, RED);
+      if (rgbMode) {
+        _strip.setPixelColor(6, RGB_RED);
+        _strip.setPixelColor(7, RGB_RED);
       } else {
         _strip.setPixelColor(6, RED);
         _strip.setPixelColor(7, RED);
       }
       break;
     case 2:
-      if (reverse_sequence) {
-        _strip.setPixelColor(2, YELLOW);
-        _strip.setPixelColor(3, YELLOW);
+      if (rgbMode) {
+        _strip.setPixelColor(4, RGB_ORANGE);
+        _strip.setPixelColor(5, RGB_ORANGE);
       } else {
         _strip.setPixelColor(4, YELLOW);
         _strip.setPixelColor(5, YELLOW);
       }
       break;
     case 3:
-      if (reverse_sequence) {
-        _strip.setPixelColor(4, YELLOW);
-        _strip.setPixelColor(5, YELLOW);
+      if (rgbMode) {
+        _strip.setPixelColor(2, RGB_ORANGE);
+        _strip.setPixelColor(3, RGB_ORANGE);
       } else {
         _strip.setPixelColor(2, YELLOW);
         _strip.setPixelColor(3, YELLOW);
@@ -58,9 +57,9 @@ void LightTree::light_start_seq_led(int step, Gate* gate) {
       break;
     case 4:
       gate->drop();
-      if (reverse_sequence) {
-        _strip.setPixelColor(6, GREEN);
-        _strip.setPixelColor(7, GREEN);
+      if (rgbMode) {
+        _strip.setPixelColor(0, RGB_GREEN);
+        _strip.setPixelColor(1, RGB_GREEN);
       } else {
         _strip.setPixelColor(0, GREEN);
         _strip.setPixelColor(1, GREEN);
