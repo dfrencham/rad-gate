@@ -26,7 +26,7 @@ Please see:
 - Arduino based micro controller with 11 digital IO pins
   - This design has been proven to run on the Arduino Uno (both the Adafruit Metro, and Robotdyne Uno clones)
   - It also runs on the ESP8266, but you **will** need to change some of the pin references
-- Soundboard, I recommend the JQ2500 model. The Adafruit SoundFX boards also work
+- Soundboard, I recommend the JQ6500 model. The Adafruit SoundFX boards also work
 - Amplifier module
 - Trim pot (TBA: trimpot value)
 - Diode (TBA: diode value)
