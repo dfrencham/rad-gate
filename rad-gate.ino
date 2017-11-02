@@ -3,6 +3,13 @@
  *  (c) Danny Frencham 2017
  *****************************************/
 
+ /********************************************
+ *  Notes: 
+ *  To use relays for light control, ground
+ *  pin 3.
+ *  Relays should be connected to A0,A1,A2,A3
+ *********************************************/
+
 #include <SoftwareSerial.h>
 #include "constants.h"
 #include "utility.h"
@@ -25,8 +32,8 @@ bool buttonPressed = 0;
   AudioFX audioFX = AudioFX(&mp3);
 #endif
 
-LightTree lighttree = LightTree(PIN_NEO_PIXEL);
 Gate gate = Gate();
+LightTree lighttree = LightTree();
 Sequence sequence = Sequence(&gate,&audioFX,&lighttree);
 
 // interrrupt handler
@@ -43,7 +50,7 @@ void Interrupt1()
 
 void setup() {
 
-  Serial.begin(115200);
+  Serial.begin(19200);
 
   #ifdef HARDWARE_SOUNDBOARD_ADAFRUIT
     ss.begin(9600);
@@ -64,10 +71,19 @@ void setup() {
   pinMode(PIN_BUTTON_GO, INPUT);
   pinMode(PIN_RELAY, OUTPUT);
   //pinMode(PIN_REED_SWITCH, INPUT_PULLUP);
+  pinMode(PIN_LIGHT_TREE_RELAY_ENABLE, INPUT_PULLUP);
 
   // not working? not needed?
   //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_GO), Interrupt1, HIGH);
   digitalWrite(PIN_RELAY, HIGH); // turn on magnet
+
+  if (digitalRead(PIN_LIGHT_TREE_RELAY_ENABLE) == LOW) {
+    lighttree.initialise(true, PIN_LIGHT_TREE_RELAY_ENABLE);
+    serial_print("Light tree configured for relay control");
+  } else {
+    lighttree.initialise(false, PIN_NEO_PIXEL);
+    serial_print("Light tree configured for serial control");
+  }
 
   serial_print("Gate controller initialised");
   serial_print(VERSION);

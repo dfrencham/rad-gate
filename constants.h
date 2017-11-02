@@ -8,7 +8,7 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define VERSION "0.7.2"
+#define VERSION "0.7.3"
 
 // uncomment for RGBW (for real Neopixels)
 //#define HARDWARE_NEOPIXEL_RGBW
@@ -50,6 +50,12 @@
 
 #define PIN_SFX_RST 2 // sound board reset
 #define PIN_SFX_ACT 1 // sound board active
+
+#define PIN_LIGHT_TREE_RELAY_ENABLE 3
+#define PIN_LIGHT_TREE_RELAY_1 14
+#define PIN_LIGHT_TREE_RELAY_2 15
+#define PIN_LIGHT_TREE_RELAY_3 16
+#define PIN_LIGHT_TREE_RELAY_4 17
 
 #define NUMPIXELS 8 // how many LEDS do you have?
 

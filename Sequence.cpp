@@ -62,7 +62,7 @@ void Sequence::begin_sequence() {
       timer_start = now;
       audio->start_tone(TONE_DROP_HZ);
       serial_print_val("LED step",step);
-      lighttree->light_start_seq_led(gate_steps[step].light_num, gate);
+      lighttree->light_set(gate_steps[step].light_num, gate);
       playing_tone = 1;
     }
     if (waiting && (timer >= gate_steps[step].wait_length)) {

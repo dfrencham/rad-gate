@@ -14,9 +14,10 @@ class LightTree {
 
   public:
 
-    LightTree(int pin);
+    LightTree();
 
-    void light_start_seq_led(int step, Gate* gate);
+    void initialise(bool useRelays, int pin);
+    void light_set(int step, Gate* gate);
     void led_reset();
     void abort();
     void ready();
@@ -24,6 +25,8 @@ class LightTree {
 
   private:
     Adafruit_NeoPixel _strip;
+    void light_set_pixel(int step);
+    void light_set_relay(int step);
 
 };
 
