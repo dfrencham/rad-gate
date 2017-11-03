@@ -45,6 +45,13 @@ Please see:
 - The MOSFET circuit (with diode, LED, and MOSFET) can be switched out for a MOSFET module, or relay module.
 - The resistor values for the LEDs vary depending on your LED model and how bright you want it. Use a breadboard circuit to determine these.
 
+## Hardware settings
+
+| Pin | Jumper | Notes |
+| -------------------| -----|-------- |
+| pin 3 | None | *Default* Light tree is a neopixel stick, controlled via serial protocol |
+| pin 3 | Ground | Sets "light tree relay mode". Triggers relays on PINS A0,A1,A2,!3 for light tree. |
+
 ## Build
 
 This project can be built using the Arduino IDE, or on the command line:
