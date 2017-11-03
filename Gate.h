@@ -21,7 +21,7 @@ class Gate {
     bool is_abortable();
 
     void set_sequence_running(bool running);
-    void set_abortale(bool abortable);
+    void set_abortable(bool abortable);
 };
 
 #endif

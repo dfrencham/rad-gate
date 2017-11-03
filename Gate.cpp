@@ -62,6 +62,6 @@ void Gate::set_sequence_running(bool running) {
   FLAG_IGNORE_INTERRUPT = false;
 }
 
-void Gate::set_abortale(bool abortable) {
+void Gate::set_abortable(bool abortable) {
   FLAG_IGNORE_INTERRUPT = !abortable;
 }

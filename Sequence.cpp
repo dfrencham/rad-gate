@@ -45,7 +45,7 @@ void Sequence::begin_sequence() {
   audio->play_sound_samples();
   gate->random_wait();
 
-  gate->set_abortale(false); // once the sequence starts, do not allow abort
+  gate->set_abortable(false); // once the sequence starts, do not allow abort
   while((step < gate_step_count) && (!gate->is_aborted())) {
     unsigned long now = millis();
     unsigned long timer = now - timer_start;
@@ -83,6 +83,7 @@ void Sequence::begin_sequence() {
   else
   {
     abort_seq();
+    gate->set_abortable(true);
   }
   set_ready();
 

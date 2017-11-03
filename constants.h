@@ -8,7 +8,7 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define VERSION "0.7.3"
+#define VERSION "0.7.4"
 
 // uncomment for RGBW (for real Neopixels)
 //#define HARDWARE_NEOPIXEL_RGBW

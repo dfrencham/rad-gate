@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.7.4
+- fixed spelling error in function name
+
+## 0.7.3
+- Added mode for controlling relay based light trees
+
 ## 0.7.2
 - Fixed light tree sequence for cheap NeoPixel stick clones (they seem to use reverse order addressing)
 
