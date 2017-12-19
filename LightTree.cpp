@@ -33,7 +33,8 @@ void LightTree::initialise(bool useRelays, int pin) {
     #endif
 
     _strip.begin();
-    _strip.setBrightness(255);
+    // _strip.setBrightness(100); dull
+    _strip.setBrightness(255); // blinding
   }
 }
 
@@ -74,7 +75,11 @@ void LightTree::led_reset() {
 void LightTree::abort() {
   if (modeRelay) {
     //digitalWrite(PIN_LIGHT_TREE_RELAY_1, HIGH);
-    led_reset();
+    //led_reset();
+    digitalWrite(PIN_LIGHT_TREE_RELAY_1, HIGH);
+    digitalWrite(PIN_LIGHT_TREE_RELAY_2, LOW);
+    digitalWrite(PIN_LIGHT_TREE_RELAY_3, LOW);
+    digitalWrite(PIN_LIGHT_TREE_RELAY_4, HIGH);
   } else {
     led_reset();
     for(int i=0;i<8;i++) {

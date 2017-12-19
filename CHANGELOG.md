@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.7.5
+- fixed gate abort interrupt
+
 ## 0.7.4
 - fixed spelling error in function name
 

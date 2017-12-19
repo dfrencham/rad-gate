@@ -7,9 +7,9 @@
 #include "utility.h"
 #include "Gate.h"
 
-int FLAG_ABORT_DROP = 0;
+int FLAG_ABORT_PENDING = 0;
 int FLAG_SEQUENCE_RUNNING = 0;
-int FLAG_IGNORE_INTERRUPT = 1;
+int FLAG_IS_ABORTABLE = 0;
 
 Gate::Gate(){
 
@@ -21,14 +21,15 @@ void Gate::random_wait() {
   serial_print_val("Gate sequence random wait time",rand_delay);
   serial_print_val("Wait timer",wait_timer);
   serial_print_val("Millis",millis());
-  while((millis() < wait_timer) && (!FLAG_ABORT_DROP)) {
+  while((millis() < wait_timer) && (!FLAG_ABORT_PENDING)) {
     // waiting for random wait to finish
   }
   serial_print("Wait timer done");
 }
 
 void Gate::ready(){
-  FLAG_ABORT_DROP = 0;
+  FLAG_ABORT_PENDING = 0;
+  FLAG_IS_ABORTABLE = 0;
 }
 
 void Gate::arm() {
@@ -38,7 +39,7 @@ void Gate::arm() {
 }
 
 void Gate::abort() {
-  FLAG_ABORT_DROP = 1;
+  FLAG_ABORT_PENDING = 1;
 }
 
 void Gate::drop() {
@@ -50,18 +51,18 @@ bool Gate::is_sequence_running() {
 }
 
 bool Gate::is_aborted() {
-  return !!FLAG_ABORT_DROP;
+  return !!FLAG_ABORT_PENDING;
 }
 
 bool Gate::is_abortable() {
-  return !FLAG_IGNORE_INTERRUPT;
+  return FLAG_IS_ABORTABLE && !FLAG_ABORT_PENDING;
 }
 
 void Gate::set_sequence_running(bool running) {
   FLAG_SEQUENCE_RUNNING = running;
-  FLAG_IGNORE_INTERRUPT = false;
+  FLAG_IS_ABORTABLE = 1;
 }
 
 void Gate::set_abortable(bool abortable) {
-  FLAG_IGNORE_INTERRUPT = !abortable;
+  FLAG_IS_ABORTABLE = abortable;
 }

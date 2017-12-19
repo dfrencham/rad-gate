@@ -35,16 +35,26 @@ bool buttonPressed = 0;
 Gate gate = Gate();
 LightTree lighttree = LightTree();
 Sequence sequence = Sequence(&gate,&audioFX,&lighttree);
+unsigned long lastButtonPress = 0;
 
 // interrrupt handler
 void Interrupt1()
 {
-  if (gate.is_abortable() && !gate.is_aborted()) {
-    serial_print("Interrupt triggered");
-    gate.abort();
-  }
-  else {
-    serial_print("Interrupt ignored");
+  if (gate.is_sequence_running()) {
+    if ((millis() - lastButtonPress) > 1000) {
+      serial_print("Interrupt triggered - button press");
+      if (gate.is_abortable()) {
+        serial_print_val("Interrupt triggered - abort request received",(millis() - lastButtonPress));
+        lighttree.abort();
+        gate.abort();
+      }
+      else {
+        serial_print("Interrupt triggered - abort request ignored");
+      }
+    }
+    else {
+      serial_print("Interrupt ignored - button press");
+    }
   }
 }
 
@@ -74,7 +84,7 @@ void setup() {
   pinMode(PIN_LIGHT_TREE_RELAY_ENABLE, INPUT_PULLUP);
 
   // not working? not needed?
-  //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_GO), Interrupt1, HIGH);
+  attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_GO), Interrupt1, HIGH);
   digitalWrite(PIN_RELAY, HIGH); // turn on magnet
 
   if (digitalRead(PIN_LIGHT_TREE_RELAY_ENABLE) == LOW) {
@@ -96,16 +106,26 @@ void setup() {
 void loop() {
 
   if (digitalRead(PIN_BUTTON_GO) == LOW) {
+    //serial_print("LOW");
     buttonPressed = 0; // reset
   }
   else if (digitalRead(PIN_BUTTON_GO) == HIGH)
   {
+    serial_print("HIGH");
     if (gate.is_sequence_running()) {
+      serial_print("ABORT");
+      lighttree.abort();
       gate.abort();
+      lighttree.led_reset();
+    }
+    else {
+      serial_print("SEQUENCE NOT RUNNING");
     }
     // only fire the button press action once
     if (!buttonPressed) {
       buttonPressed = 1;
+      lastButtonPress = millis();
+      serial_print_val("Sequence start - lastButtonPress val", lastButtonPress);
       sequence.begin_sequence();
     } // else still holding button
   }

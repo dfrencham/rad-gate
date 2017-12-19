@@ -8,7 +8,7 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define VERSION "0.7.4"
+#define VERSION "0.7.5"
 
 // uncomment for RGBW (for real Neopixels)
 //#define HARDWARE_NEOPIXEL_RGBW
@@ -39,7 +39,7 @@
 #define TONE_VOLUME 130
 
 #define PIN_NEO_PIXEL 13 // light tree pin
-#define PIN_BUTTON_GO 12
+#define PIN_BUTTON_GO 2
 #define PIN_SPEAKER 11
 #define PIN_RELAY 8 // relay, or MOSFET
 #define PIN_LED_ACTIVE 5
@@ -48,7 +48,7 @@
 #define PIN_SFX_TX 10 // sound board transmit
 #define PIN_SFX_RX 9 // sound board receive
 
-#define PIN_SFX_RST 2 // sound board reset
+#define PIN_SFX_RST 0 // sound board reset
 #define PIN_SFX_ACT 1 // sound board active
 
 #define PIN_LIGHT_TREE_RELAY_ENABLE 3
