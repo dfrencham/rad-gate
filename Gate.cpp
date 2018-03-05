@@ -19,8 +19,8 @@ void Gate::random_wait() {
   int rand_delay = random(DELAY_RAND_MIN,DELAY_RAND_MAX+1);
   unsigned long wait_timer = millis() + rand_delay;
   serial_print_val("Gate sequence random wait time",rand_delay);
-  serial_print_val("Wait timer",wait_timer);
-  serial_print_val("Millis",millis());
+  // serial_print_val("Wait timer",wait_timer);
+  // serial_print_val("Millis",millis());
   while((millis() < wait_timer) && (!FLAG_ABORT_PENDING)) {
     // waiting for random wait to finish
   }
@@ -33,9 +33,8 @@ void Gate::ready(){
 }
 
 void Gate::arm() {
-  // set LED to red
-  // turn on electro magnet
-  // beep
+  serial_print("Gate Deactivate");
+  digitalWrite(PIN_RELAY, LOW);
 }
 
 void Gate::abort() {
@@ -43,7 +42,8 @@ void Gate::abort() {
 }
 
 void Gate::drop() {
-  digitalWrite(PIN_RELAY, LOW);
+  serial_print("Gate Activate");
+  digitalWrite(PIN_RELAY, HIGH);
 }
 
 bool Gate::is_sequence_running() {

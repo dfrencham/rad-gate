@@ -20,6 +20,7 @@ class AudioFX {
     void play_sound_samples();
     void play_abort();
     void play_power_on();
+    void stop_play();
 
   private:
     Adafruit_Soundboard *sfx;

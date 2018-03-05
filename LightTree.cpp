@@ -38,32 +38,17 @@ void LightTree::initialise(bool useRelays, int pin) {
   }
 }
 
-void LightTree::light_set(int step, Gate* gate) {
-  serial_print_val("Set LED", step);
-  switch (step) {
-    case 1:
-      led_reset();
-      modeRelay ? light_set_relay(step) : light_set_pixel(step);
-      break;
-    case 2:
-    case 3:
-      modeRelay ? light_set_relay(step) : light_set_pixel(step);
-      break;
-    case 4:
-      gate->drop();
-      modeRelay ? light_set_relay(step) : light_set_pixel(step);
-      break;
-     default:
-      led_reset();
-  }
+void LightTree::light_set(int step) {
+  serial_print_val("Set LED ", step);
+  modeRelay ? light_set_relay(step) : light_set_pixel(step);
 }
 
 void LightTree::led_reset() {
   if (modeRelay) {
-    digitalWrite(PIN_LIGHT_TREE_RELAY_1, HIGH);
-    digitalWrite(PIN_LIGHT_TREE_RELAY_2, HIGH);
-    digitalWrite(PIN_LIGHT_TREE_RELAY_3, HIGH);
-    digitalWrite(PIN_LIGHT_TREE_RELAY_4, HIGH);
+    digitalWrite(PIN_LIGHT_TREE_RELAY_1, LOW);
+    digitalWrite(PIN_LIGHT_TREE_RELAY_2, LOW);
+    digitalWrite(PIN_LIGHT_TREE_RELAY_3, LOW);
+    digitalWrite(PIN_LIGHT_TREE_RELAY_4, LOW);
   } else {
     for(int i=0;i<8;i++) {
       _strip.setPixelColor(i,0,0,0,0);
@@ -74,12 +59,10 @@ void LightTree::led_reset() {
 
 void LightTree::abort() {
   if (modeRelay) {
-    //digitalWrite(PIN_LIGHT_TREE_RELAY_1, HIGH);
-    //led_reset();
-    digitalWrite(PIN_LIGHT_TREE_RELAY_1, HIGH);
-    digitalWrite(PIN_LIGHT_TREE_RELAY_2, LOW);
-    digitalWrite(PIN_LIGHT_TREE_RELAY_3, LOW);
-    digitalWrite(PIN_LIGHT_TREE_RELAY_4, HIGH);
+    digitalWrite(PIN_LIGHT_TREE_RELAY_1, LOW);
+    digitalWrite(PIN_LIGHT_TREE_RELAY_2, HIGH);
+    digitalWrite(PIN_LIGHT_TREE_RELAY_3, HIGH);
+    digitalWrite(PIN_LIGHT_TREE_RELAY_4, LOW);
   } else {
     led_reset();
     for(int i=0;i<8;i++) {
@@ -104,7 +87,6 @@ void LightTree::set_status(uint32_t color) {
   _strip.setPixelColor(0, color);
   _strip.show();
 }
-
 
 void LightTree::light_set_pixel(int step) {
   switch (step) {
@@ -154,18 +136,18 @@ void LightTree::light_set_pixel(int step) {
 void LightTree::light_set_relay(int step) {
   switch (step) {
     case 1:
-      digitalWrite(PIN_LIGHT_TREE_RELAY_1, LOW);
+      digitalWrite(PIN_LIGHT_TREE_RELAY_1, HIGH);
       break;
     case 2:
-      digitalWrite(PIN_LIGHT_TREE_RELAY_2, LOW);
+      digitalWrite(PIN_LIGHT_TREE_RELAY_2, HIGH);
       break;
     case 3:
-      digitalWrite(PIN_LIGHT_TREE_RELAY_3, LOW);
+      digitalWrite(PIN_LIGHT_TREE_RELAY_3, HIGH);
       break;
     case 4:
-      digitalWrite(PIN_LIGHT_TREE_RELAY_4, LOW);
+      digitalWrite(PIN_LIGHT_TREE_RELAY_4, HIGH);
       break;
-     default:
+    default:
       led_reset();
   }
 }

@@ -6,7 +6,7 @@
  /********************************************
  *  Notes: 
  *  To use relays for light control, ground
- *  pin 3.
+ *  pin 4.
  *  Relays should be connected to A0,A1,A2,A3
  *********************************************/
 
@@ -28,39 +28,36 @@ bool buttonPressed = 0;
   AudioFX audioFX = AudioFX(&sfx);
 #endif
 #ifdef HARDWARE_SOUNDBOARD_JQ6500
-  JQ6500_Serial mp3(PIN_SFX_TX,PIN_SFX_RX);
+  JQ6500_Serial mp3(PIN_SFX_TX, PIN_SFX_RX);
   AudioFX audioFX = AudioFX(&mp3);
 #endif
 
 Gate gate = Gate();
 LightTree lighttree = LightTree();
-Sequence sequence = Sequence(&gate,&audioFX,&lighttree);
+Sequence sequence = Sequence(&gate, &audioFX, &lighttree);
 unsigned long lastButtonPress = 0;
 
-// interrrupt handler
+// interrupt handler
 void Interrupt1()
 {
   if (gate.is_sequence_running()) {
     if ((millis() - lastButtonPress) > 1000) {
-      serial_print("Interrupt triggered - button press");
+      // serial_print("Interrupt1 triggered - button press");
       if (gate.is_abortable()) {
-        serial_print_val("Interrupt triggered - abort request received",(millis() - lastButtonPress));
+        serial_print_val("Interrupt1 triggered - abort request received", (millis() - lastButtonPress));
+        // audioFX.stop_play();
         lighttree.abort();
         gate.abort();
       }
-      else {
-        serial_print("Interrupt triggered - abort request ignored");
-      }
-    }
-    else {
-      serial_print("Interrupt ignored - button press");
     }
   }
 }
 
+
 void setup() {
 
   Serial.begin(19200);
+  serial_print(VERSION);
 
   #ifdef HARDWARE_SOUNDBOARD_ADAFRUIT
     ss.begin(9600);
@@ -83,20 +80,23 @@ void setup() {
   //pinMode(PIN_REED_SWITCH, INPUT_PULLUP);
   pinMode(PIN_LIGHT_TREE_RELAY_ENABLE, INPUT_PULLUP);
 
-  // not working? not needed?
+  // Use interrupt to catch ABORT request from GO button
   attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_GO), Interrupt1, HIGH);
-  digitalWrite(PIN_RELAY, HIGH); // turn on magnet
+
+  // turn off solenoid
+  // serial_print("Gate solenoid DEACTIVATED");
+  digitalWrite(PIN_RELAY, LOW);
 
   if (digitalRead(PIN_LIGHT_TREE_RELAY_ENABLE) == LOW) {
     lighttree.initialise(true, PIN_LIGHT_TREE_RELAY_ENABLE);
-    serial_print("Light tree configured for relay control");
-  } else {
+    // serial_print("Light tree configured for relay control");
+  }  else {
     lighttree.initialise(false, PIN_NEO_PIXEL);
     serial_print("Light tree configured for serial control");
   }
 
   serial_print("Gate controller initialised");
-  serial_print(VERSION);
+  serial_print("Waiting for GO Button Press");
   delay(100);
   lighttree.led_reset();
   lighttree.ready();
@@ -109,24 +109,13 @@ void loop() {
     //serial_print("LOW");
     buttonPressed = 0; // reset
   }
-  else if (digitalRead(PIN_BUTTON_GO) == HIGH)
-  {
-    serial_print("HIGH");
-    if (gate.is_sequence_running()) {
-      serial_print("ABORT");
-      lighttree.abort();
-      gate.abort();
-      lighttree.led_reset();
-    }
-    else {
-      serial_print("SEQUENCE NOT RUNNING");
-    }
-    // only fire the button press action once
+  else if (digitalRead(PIN_BUTTON_GO) == HIGH) {
+    serial_print("Button HIGH");
     if (!buttonPressed) {
       buttonPressed = 1;
       lastButtonPress = millis();
       serial_print_val("Sequence start - lastButtonPress val", lastButtonPress);
       sequence.begin_sequence();
-    } // else still holding button
+    }
   }
 }
