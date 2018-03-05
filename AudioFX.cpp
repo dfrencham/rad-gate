@@ -28,11 +28,12 @@ AudioFX::AudioFX(JQ6500_Serial *jref) {
 }
 
 void AudioFX::start_tone(int hz) {
-  serial_print("Tone");
+  // serial_print_val("Tone", TONE_DROP_HZ);
   tone(PIN_SPEAKER, TONE_DROP_HZ);
 }
 
 void AudioFX::stop_tone() {
+  // serial_print("Tone Stop");
   noTone(PIN_SPEAKER);
 }
 
@@ -49,15 +50,18 @@ void AudioFX::play_sound_samples() {
     return;
   }
 
-  serial_print("Play Sample1");
-  play_sample(SFX_PREP,2013);
+  serial_print("Play 1.mp3");
+  play_sample(SFX_PREP); // try this first. If use below
+  // play_sample(SFX_PREP,2013);  // file_number, play_time
   delay(1750);
-  serial_print("Play Sample2");
-  play_sample(SFX_WATCH_GATE,2330);
-  serial_print("SFX Done");
+  serial_print("Play 2.mp3");
+  play_sample(SFX_WATCH_GATE);
+  //play_sample(SFX_WATCH_GATE,2330); // file_number, play_time
+  serial_print("SFX mp3 play Done");
 }
 
 void AudioFX::play_abort() {
+  serial_print("playing abort tones");
   tone(PIN_SPEAKER, TONE_ABORT_1_HZ, DELAY_ABORT_TONE_1_MS);
   delay(DELAY_ABORT_TONE_1_MS);
   tone(PIN_SPEAKER, TONE_ABORT_2_HZ, DELAY_ABORT_TONE_2_MS);
@@ -65,7 +69,7 @@ void AudioFX::play_abort() {
 
 void AudioFX::play_sample(uint8_t track) {
   if (SFX_ADAFRUIT) {
-    serial_print("SFX playing on Adafruit device");
+    serial_print("a. SFX playing on Adafruit device");
     sfx->playTrack(track);
     delay(50);
     while (digitalRead(PIN_SFX_ACT) == LOW) {
@@ -79,33 +83,43 @@ void AudioFX::play_sample(uint8_t track) {
     // We need to use the method below (passing in playtime) to
     // finish playing when the track finishes. It is a crap way to do
     // it, but for $3 for a JQ6500, I can live with it.
-    serial_print("SFX playing on QJ6500 device");
+    serial_print("a. SFX playing on JQ6500 device");
     jfx->playFileByIndexNumber(track);
-    delay(50);
-    while(jfx->getStatus() == MP3_STATUS_PLAYING)
+    delay(150);
+    byte stat =jfx->getStatus();  //0x00 , 0x01, 0x02 Stopped/Playing/Paused
+    serial_print_val("SFX getStatus()",stat);
+    while(stat != MP3_STATUS_STOPPED)
     {
-         // wait for sample to finish
+         // waiting for mp3 to finish
          // debug
-         //serial_print_val("SFX Status",jfx->getStatus());
+         delay(150);
+         serial_print_val("SFX getStatus()",stat);
     }
     serial_print("SFX done");
   }
-  return;
+  // return;
 }
 
 // needed for JQ6500, because cheap crap.
 void AudioFX::play_sample(uint8_t track, int playTime) {
   if (SFX_ADAFRUIT) {
-    serial_print("SFX playing on Adafruit device");
+    serial_print("b. SFX playing on Adafruit device");
     sfx->playTrack(track);
     delay(playTime);
   }
   else
   {
-    serial_print("SFX playing on QJ6500 device");
+    serial_print("b. SFX playing on JQ6500 device");
     jfx->playFileByIndexNumber(track);
     delay(playTime);
   }
   serial_print("SFX done");
-  return;
+  // return;
+}
+
+void AudioFX::stop_play() {
+    // may need to test status first 
+    serial_print("Pausing JQ6500 device");
+    jfx->pause();
+
 }

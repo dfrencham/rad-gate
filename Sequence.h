@@ -17,6 +17,9 @@ class Sequence {
     void begin_sequence();
     void abort_seq();
     void set_ready();
+    void setLed(int led_val);
+    void gateAct(int gate_val);
+    void playTone(int play_val);
 
   private:
     Gate *gate;

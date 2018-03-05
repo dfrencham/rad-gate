@@ -1,4 +1,6 @@
 # Change Log
+## 0.8.0b
+- timing support
 
 ## 0.7.5
 - fixed gate abort interrupt
