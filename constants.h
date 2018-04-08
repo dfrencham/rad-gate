@@ -6,9 +6,11 @@
 #ifndef _CONSTANTS_H
 #define _CONSTANTS_H
 
-#include <Adafruit_NeoPixel.h>
+#include <stdint.h> 
 
 #define VERSION "0.7.5"
+
+#define CONFIG_REVERSE_RELAY
 
 // uncomment for RGBW (for real Neopixels)
 //#define HARDWARE_NEOPIXEL_RGBW
@@ -20,18 +22,19 @@
 // set to "JQ6500" if using the cheap and friendly Aliexpress JQ6500
 #define HARDWARE_SOUNDBOARD_JQ6500 1
 
-// some inferior gate controllers don't BEEP at the correct pitch
-// frequence. Correct tones (in Hz) are below
 #define DELAY_DROP_TONE_MS 60
 #define DELAY_DROP_TONE_FINAL_MS 2250
 #define DELAY_GATE_RISE_WARN_MS 25
 #define DELAY_ABORT_TONE_1_MS 220
 #define DELAY_ABORT_TONE_2_MS 440
+#define DELAY_INTERSTEP_PAUSE 60
 
 // random start min and max
 #define DELAY_RAND_MIN 100
 #define DELAY_RAND_MAX 2700
 
+// some gate controllers don't BEEP at the correct pitch
+// frequence. Correct tones (in Hz) are below
 #define TONE_DROP_HZ 632
 #define TONE_GATE_RISE 1150
 #define TONE_ABORT_1_HZ 740

@@ -3,14 +3,19 @@
  *  (c) Danny Frencham 2017
  *****************************************/
 
-#include <SoftwareSerial.h>
-
-#include "Adafruit_Soundboard.h"
-#include <JQ6500_Serial.h>
-
 #include "constants.h"
 #include "utility.h"
 #include "AudioFX.h"
+#include "ArduinoBeep.h"
+#include <SoftwareSerial.h>
+
+#ifndef UNIT_TEST
+#include "Adafruit_Soundboard.h"
+#include "JQ6500_Serial.h"
+#else
+#include "mocks/Adafruit_Soundboard.h"
+#include "mocks/JQ6500_Serial.h"
+#endif
 
 #ifdef HARDWARE_SOUNDBOARD_ADAFRUIT
   bool SFX_ADAFRUIT = 1;
@@ -19,12 +24,14 @@
   bool SFX_ADAFRUIT = 0;
 #endif
 
-AudioFX::AudioFX(Adafruit_Soundboard *sbref) {
+AudioFX::AudioFX(Adafruit_Soundboard *sbref, ArduinoBeep *beepref) {
   sfx = sbref;
+  beep = beepref;
 }
 
-AudioFX::AudioFX(JQ6500_Serial *jref) {
+AudioFX::AudioFX(JQ6500_Serial *jref, ArduinoBeep *beepref) {
   jfx = jref;
+  beep = beepref;
 }
 
 void AudioFX::start_tone(int hz) {
@@ -49,12 +56,17 @@ void AudioFX::play_sound_samples() {
     return;
   }
 
-  serial_print("Play Sample1");
-  play_sample(SFX_PREP,2013);
-  delay(1750);
-  serial_print("Play Sample2");
-  play_sample(SFX_WATCH_GATE,2330);
-  serial_print("SFX Done");
+  serial_print("Playing voice cadence");
+  if (SFX_ADAFRUIT) {
+    play_sample(SFX_PREP);
+    //delay(1750); // delay for UCI spec
+    play_sample(SFX_WATCH_GATE);
+  } else {
+    play_sample(SFX_PREP,2013);
+    delay(1750); // delay for UCI spec
+    play_sample(SFX_WATCH_GATE,2330);
+  }
+  serial_print("Voice cadence Done");
 }
 
 void AudioFX::play_abort() {

@@ -17,16 +17,16 @@ Sequence::Sequence(Gate* gateOb, AudioFX* audioOb, LightTree* lighttreeOb)
 void Sequence::begin_sequence() {
 
   // gate timings
-  // Tone Play Time, wait length, light tree step
   gate_step gate_steps[] =  {
-    { DELAY_DROP_TONE_MS, 0, 1 },
-    { 0, 60, 0 },
-    { DELAY_DROP_TONE_MS, 0, 2 },
-    { 0, 60, 0 },
-    { DELAY_DROP_TONE_MS, 0, 3 },
-    { 0, 60, 0 },
-    { DELAY_DROP_TONE_FINAL_MS, 0, 4 },
-    { 0, 0, 0 }  
+  // Tone Play Time,            wait length,      light tree step
+    { DELAY_DROP_TONE_MS,       0,                      1 },
+    { 0,                        DELAY_INTERSTEP_PAUSE,  0 },
+    { DELAY_DROP_TONE_MS,       0,                      2 },
+    { 0,                        DELAY_INTERSTEP_PAUSE,  0 },
+    { DELAY_DROP_TONE_MS,       0,                      3 },
+    { 0,                        DELAY_INTERSTEP_PAUSE,  0 },
+    { DELAY_DROP_TONE_FINAL_MS, 0,                      4 },
+    { 0,                        0,                      0 }  
   };
 
   serial_print("Sequence begin");

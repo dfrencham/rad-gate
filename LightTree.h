@@ -3,7 +3,13 @@
  *  (c) Danny Frencham 2017
  *****************************************/
 
-#include <Adafruit_NeoPixel.h>
+#ifndef UNIT_TEST
+#include "Adafruit_NeoPixel.h"
+#else
+#include "mocks/Adafruit_NeoPixel.h"
+#endif
+
+#include <Arduino.h>
 #include "utility.h"
 #include "Gate.h"
 

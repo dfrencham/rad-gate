@@ -1,0 +1,21 @@
+compile:
+  libraries:
+  platforms:
+    - uno2
+
+unittest:
+  libraries:
+  platforms:
+    - uno2
+
+platforms:
+  uno2:
+    board: arduino:avr:uno
+    package: ~
+    gcc:
+      features:
+      defines:
+        - __AVR_ATmega328P__
+        - UNIT_TEST
+      warnings:
+      flags:

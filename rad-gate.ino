@@ -17,7 +17,16 @@
 #include "LightTree.h"
 #include "Gate.h"
 #include "Sequence.h"
+#include "ArduinoBeep.h"
+#include "MockBeep.h"
 #include <JQ6500_Serial.h>
+
+//ArduinoBeep beepref;
+#ifndef UNIT_TEST
+  ArduinoBeep beepref = ArduinoBeep();
+#else
+  MockBeep beepref = MockBeep();
+#endif
 
 // declarations
 bool buttonPressed = 0;
@@ -25,11 +34,11 @@ bool buttonPressed = 0;
 #ifdef HARDWARE_SOUNDBOARD_ADAFRUIT
   SoftwareSerial ss = SoftwareSerial(PIN_SFX_TX, PIN_SFX_RX);
   Adafruit_Soundboard sfx = Adafruit_Soundboard(&ss, NULL, PIN_SFX_RST);
-  AudioFX audioFX = AudioFX(&sfx);
+  AudioFX audioFX = AudioFX(&sfx, &beepref);
 #endif
 #ifdef HARDWARE_SOUNDBOARD_JQ6500
   JQ6500_Serial mp3(PIN_SFX_TX,PIN_SFX_RX);
-  AudioFX audioFX = AudioFX(&mp3);
+  AudioFX audioFX = AudioFX(&mp3, &beepref);
 #endif
 
 Gate gate = Gate();

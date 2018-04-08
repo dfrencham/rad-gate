@@ -1,12 +1,6 @@
 [submodule "libs/Adafruit_Soundboard_library"]
 	path = libs/Adafruit_Soundboard_library
 	url = https://github.com/adafruit/Adafruit_Soundboard_library
-[submodule "libs/Adafruit_NeoPixel"]
-	path = libs/Adafruit_NeoPixel
-	url = https://github.com/adafruit/Adafruit_NeoPixel
-[submodule "libs/Adafruit_Soundboard"]
-	path = libs/Adafruit_Soundboard
-	url = https://github.com/adafruit/Adafruit_Soundboard_library
 [submodule "JQ6500_Serial"]
 	path = JQ6500_Serial
 	url = https://github.com/sleemanj/JQ6500_Serial
