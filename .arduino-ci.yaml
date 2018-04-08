@@ -4,6 +4,8 @@ compile:
     - uno2
 
 unittest:
+  compilers:
+    - g++
   libraries:
   platforms:
     - uno2
