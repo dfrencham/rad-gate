@@ -20,6 +20,7 @@
 #include "ArduinoBeep.h"
 #include "MockBeep.h"
 #include <JQ6500_Serial.h>
+#include <iostream>
 
 //ArduinoBeep beepref;
 #ifndef UNIT_TEST
@@ -45,6 +46,8 @@ Gate gate = Gate();
 LightTree lighttree = LightTree();
 Sequence sequence = Sequence(&gate,&audioFX,&lighttree);
 unsigned long lastButtonPress = 0;
+
+std::cerr << "rad-gate.ino()" << std::endl;
 
 // interrrupt handler
 void Interrupt1()
@@ -94,7 +97,7 @@ void setup() {
 
   // not working? not needed?
   attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_GO), Interrupt1, HIGH);
-  digitalWrite(PIN_RELAY, HIGH); // turn on magnet
+  gate->arm(); // turn on magnet
 
   if (digitalRead(PIN_LIGHT_TREE_RELAY_ENABLE) == LOW) {
     lighttree.initialise(true, PIN_LIGHT_TREE_RELAY_ENABLE);

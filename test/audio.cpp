@@ -7,13 +7,14 @@
 
 unittest(sound)
 {
+  cerr << "  Sound test" << endl;
   GodmodeState* state = GODMODE();
-  MockBeep beep = MockBeep();
+  MockBeep mbeep = MockBeep();
   JQ6500_Serial mp3(PIN_SFX_TX,PIN_SFX_RX);
-  AudioFX audioFX = AudioFX(&mp3, &beep);
+  AudioFX audioFX = AudioFX(&mp3, &mbeep);
   audioFX.play_power_on();
-  // beep.wasTonePlayed(1000)
-  assertTrue(true);
+  assertTrue(mbeep.wasTonePlayed(1000));
+  assertTrue(mbeep.wasTonePlayed(1333));
 }
 
 unittest_main()

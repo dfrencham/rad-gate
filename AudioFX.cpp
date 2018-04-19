@@ -6,7 +6,7 @@
 #include "constants.h"
 #include "utility.h"
 #include "AudioFX.h"
-#include "ArduinoBeep.h"
+#include "Beep.h"
 #include <SoftwareSerial.h>
 
 #ifndef UNIT_TEST
@@ -24,19 +24,19 @@
   bool SFX_ADAFRUIT = 0;
 #endif
 
-AudioFX::AudioFX(Adafruit_Soundboard *sbref, ArduinoBeep *beepref) {
+AudioFX::AudioFX(Adafruit_Soundboard *sbref, Beep *beepref) {
   sfx = sbref;
   beep = beepref;
 }
 
-AudioFX::AudioFX(JQ6500_Serial *jref, ArduinoBeep *beepref) {
+AudioFX::AudioFX(JQ6500_Serial *jref, Beep *beepref) {
   jfx = jref;
   beep = beepref;
 }
 
 void AudioFX::start_tone(int hz) {
   serial_print("Tone");
-  tone(PIN_SPEAKER, TONE_DROP_HZ);
+  beep->tone(PIN_SPEAKER, TONE_DROP_HZ);
 }
 
 void AudioFX::stop_tone() {
@@ -44,9 +44,9 @@ void AudioFX::stop_tone() {
 }
 
 void AudioFX::play_power_on() {
-  tone(PIN_SPEAKER, 1000, 100);
+  beep->tone(PIN_SPEAKER, 1000, 100);
   delay(100);
-  tone(PIN_SPEAKER, 1333, 600);
+  beep->tone(PIN_SPEAKER, 1333, 600);
   delay(600);
 }
 
@@ -70,9 +70,9 @@ void AudioFX::play_sound_samples() {
 }
 
 void AudioFX::play_abort() {
-  tone(PIN_SPEAKER, TONE_ABORT_1_HZ, DELAY_ABORT_TONE_1_MS);
+  beep->tone(PIN_SPEAKER, TONE_ABORT_1_HZ, DELAY_ABORT_TONE_1_MS);
   delay(DELAY_ABORT_TONE_1_MS);
-  tone(PIN_SPEAKER, TONE_ABORT_2_HZ, DELAY_ABORT_TONE_2_MS);
+  beep->tone(PIN_SPEAKER, TONE_ABORT_2_HZ, DELAY_ABORT_TONE_2_MS);
 }
 
 void AudioFX::play_sample(uint8_t track) {

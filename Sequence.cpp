@@ -43,11 +43,13 @@ void Sequence::begin_sequence() {
 
   lighttree->led_reset();
   audio->play_sound_samples();
+  serial_print("Start random wait");
   gate->random_wait();
 
   serial_print("No longer abortable");
   gate->set_abortable(false); // once the sequence starts, do not allow abort
   while((step < gate_step_count) && (!gate->is_aborted())) {
+    delayMicroseconds(100);
     unsigned long now = millis();
     unsigned long timer = now - timer_start;
 
@@ -90,7 +92,7 @@ void Sequence::begin_sequence() {
 
   digitalWrite(PIN_LED_ACTIVE, LOW);
   digitalWrite(LED_BUILTIN, LOW);
-  digitalWrite(PIN_RELAY, HIGH); // turn on magnet
+  gate->arm(); // turn on magnet
   serial_print("Sequence complete");
 }
 

@@ -31,6 +31,7 @@ unittest(gate_drops)
 unittest(gate_abort)
 {
   GodmodeState* state = GODMODE();
+
   Gate gate = Gate();
   gate.ready();
   
