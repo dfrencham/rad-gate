@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dfrencham/rad-gate.svg?branch=unittest)](https://travis-ci.org/dfrencham/rad-gate)
+
 # RAD Gate
 ### RemoteArDuino BMX Gate Controller
 
