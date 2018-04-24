@@ -28,7 +28,7 @@
 //  print_string    string to print
 void serial_print(const char* print_string) {
 #ifdef UNIT_TEST
-std::cerr << BLUE << "      Serial output: " << GREEN << print_string << RESET << std::endl;
+std::cerr << BLUE << millis() << "      Serial output: " << GREEN << print_string << RESET << std::endl;
 #endif
   
   if (Serial) {
@@ -46,7 +46,7 @@ std::cerr << BLUE << "      Serial output: " << GREEN << print_string << RESET <
 void serial_print_val(const char* print_string, unsigned long print_val) {
 
 #ifdef UNIT_TEST
-std::cerr << BLUE << "      Serial output: " << GREEN << print_string << " " << BOLDCYAN << print_val << RESET << std::endl;
+std::cerr << BLUE << millis() << "      Serial output: " << GREEN <<print_string << " " << BOLDCYAN << print_val << RESET << std::endl;
 #endif
 
     if (Serial) {

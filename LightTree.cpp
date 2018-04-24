@@ -17,6 +17,10 @@ bool modeRelay = false;
 
 LightTree::LightTree() { }
 
+Adafruit_NeoPixel LightTree::getStrip() {
+  return _strip;
+}
+
 void LightTree::initialise(bool useRelays, int pin) {
   if (useRelays) {
     modeRelay = useRelays;
@@ -44,7 +48,6 @@ void LightTree::initialise(bool useRelays, int pin) {
 }
 
 void LightTree::light_set(int step, Gate* gate) {
-  serial_print_val("Set LED", step);
   switch (step) {
     case 1:
       led_reset();
@@ -112,6 +115,7 @@ void LightTree::set_status(uint32_t color) {
 
 
 void LightTree::light_set_pixel(int step) {
+  serial_print_val("Trigger Light LED", step);
   switch (step) {
     case 1:
       led_reset();
@@ -157,6 +161,7 @@ void LightTree::light_set_pixel(int step) {
 }
 
 void LightTree::light_set_relay(int step) {
+  serial_print_val("Trigger Light tree relay", step);
   switch (step) {
     case 1:
       digitalWrite(PIN_LIGHT_TREE_RELAY_1, LOW);

@@ -28,6 +28,7 @@ class LightTree {
     void abort();
     void ready();
     void set_status(uint32_t color);
+    Adafruit_NeoPixel getStrip();
 
   private:
     Adafruit_NeoPixel _strip;
